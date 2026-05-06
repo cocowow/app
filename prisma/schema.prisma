@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Character {
+  id        String   @id @default(uuid()) 
+  name      String   @unique
+  createdAt DateTime @default(now())
+  wins      Int      @default(0)
+  losses    Int      @default(0)
+  ties      Int      @default(0)
+    // Lägg till relation till User
+  createdBy   User?   @relation("CharacterCreatedBy", fields: [createdById], references: [id])
+  createdById String?
+}
+// schema.prisma - Din förbättrade version
+model User {
+  id       String @id @default(uuid())
+  username String @unique
+  password String // Detta kommer vi ändra senare för säkerhet!
+  email    String? @unique
+  createdAt DateTime @default(now())
+  
+  // Hur kopplar du User till dina befintliga modeller?
+  // Exempel: Forum skapas av User, Message skrivs av User
+  characters   Character[]   @relation("CharacterCreatedBy")
+}
+

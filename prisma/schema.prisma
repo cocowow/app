@@ -17,20 +17,22 @@ model Character {
   wins      Int      @default(0)
   losses    Int      @default(0)
   ties      Int      @default(0)
-    // Lägg till relation till User
   createdBy   User?   @relation("CharacterCreatedBy", fields: [createdById], references: [id])
   createdById String?
 }
-// schema.prisma - Din förbättrade version
+
 model User {
   id       String @id @default(uuid())
   username String @unique
-  password String // Detta kommer vi ändra senare för säkerhet!
-  email    String? @unique
+  salt     String  
+  hash     String  
   createdAt DateTime @default(now())
+  sessionToken   String?   @unique
+  tokenCreatedAt DateTime?
+  lastActive     DateTime?
   
-  // Hur kopplar du User till dina befintliga modeller?
-  // Exempel: Forum skapas av User, Message skrivs av User
   characters   Character[]   @relation("CharacterCreatedBy")
 }
+
+
 

@@ -40,7 +40,7 @@ export const actions = {
         data: {
           name: name.trim(),
           createdById: user.id
-          // Standardvärden kommer från schema (@default)
+          
         }
       });
       
